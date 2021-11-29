@@ -125,6 +125,36 @@ app.delete("/cities/:id",async (req,res)=>{
     }
 })
 
+// crud for skill
+app.post("/skills", async (req,res)=>{
+    try{
+        const skill = await Skill.create(req.body);
+        return res.status(201).send(skill);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/skills", async (req,res)=>{
+    try{
+        const skills = await Skill.find().lean().exec();
+        return res.send({skills});
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/skills/:id",async(req,res)=>{
+    try{
+        const skill = await Skill.findById(req.params.id).lean().exec();
+        return res.send(skill);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
 
 
 
