@@ -126,6 +126,8 @@ app.delete("/cities/:id",async (req,res)=>{
     }
 })
 
+
+
 // crud for skill
 app.post("/skills", async (req,res)=>{
     try{
@@ -172,7 +174,16 @@ app.post("/jobs", async (req,res)=>{
 
 app.get("/jobs", async (req,res)=>{
     try{
-        const jobs = await Job.find().lean().exec();
+        const jobs = await Job.find({work_from_home:true}).lean().exec();
+        return res.send({jobs});
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+app.get("/jobs/rating", async (req,res)=>{
+    try{
+        const jobs = await Job.find().sort({rating:"asc"}).lean().exec();
         return res.send({jobs});
     }
     catch(e){
@@ -209,6 +220,8 @@ app.delete("/jobs/:id",async (req,res)=>{
         return res.status(500).json({message:e.message, ststus:"Failed"})
     }
 })
+app.get("/jobs/:id/")
+
 
 // crud for company
 
