@@ -210,6 +210,30 @@ app.delete("/jobs/:id",async (req,res)=>{
     }
 })
 
+// crud for company
+
+app.post("/companies", async (req,res)=>{
+    try{
+        const company = await Company.create(req.body);
+        return res.status(201).send(company);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/companies", async (req,res)=>{
+    try{
+        const companies = await Company.find().lean().exec();
+        return res.send({companies});
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+
+
 
 
 
