@@ -157,6 +157,61 @@ app.get("/skills/:id",async(req,res)=>{
 })
 
 
+//crud for jobs
+
+app.post("/jobs", async (req,res)=>{
+    try{
+        const job = await Job.create(req.body);
+        return res.status(201).send(job);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/jobs", async (req,res)=>{
+    try{
+        const jobs = await Job.find().lean().exec();
+        return res.send({jobs});
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/jobs/:id",async(req,res)=>{
+    try{
+        const job = await Job.findById(req.params.id).lean().exec();
+        return res.send(job);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.patch("/jobs/:id",async(req,res)=>{
+    try{
+        const job = await Job.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        return res.status(201).send(job);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.delete("/jobs/:id",async (req,res)=>{
+    try{
+        const job = await Job.findByIdAndDelete(req.params.id).lean().exec();
+        res.status(200).send(job);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+
+
+
 
 
 
