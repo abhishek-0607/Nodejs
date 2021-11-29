@@ -11,6 +11,7 @@ const connect = ()=>{
 const jobSchema = new mongoose.Schema({
     job_title:{type:String, required:true, unique:true},
     rating:{type:Number, required:true},
+    work_from_home:{type:Boolean,required:false},
     skill_ids:[
         {type: mongoose.Schema.Types.ObjectId,
         ref:"skill",
