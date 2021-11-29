@@ -70,6 +70,9 @@ const companySchema = new mongoose.Schema({
 
 const Company = mongoose.model("company",companySchema);
 
+const app = express();
+app.use(express.json());
+
 
 //crud for city 
 app.post("/cities", async (req,res)=>{
@@ -95,7 +98,7 @@ app.get("/cities", async (req,res)=>{
 app.get("/cities/:id",async(req,res)=>{
     try{
         const city = await City.findById(req.params.id).lean().exec();
-        return res.status(201).send(city);
+        return res.send(city);
     }
     catch(e){
         return res.status(500).json({message:e.message, ststus:"Failed"})
@@ -129,8 +132,7 @@ app.delete("/cities/:id",async (req,res)=>{
 
 
 
-const app = express();
-app.use(express.json());
+
 
 app.listen(8823,async function(){
     await connect();
