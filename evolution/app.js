@@ -106,6 +106,17 @@ app.get("/cities/:id",async(req,res)=>{
     }
 })
 
+app.get("/cities/:id/jobs",async(req,res)=>{
+    try{
+        const city = await City.findById(req.params.id).lean().exec();
+        const job = await Job.find({city_ids: req.params.id}).lean().exec()
+        return res.send({city,job});
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
 app.patch("/cities/:id",async(req,res)=>{
     try{
         const city = await City.findByIdAndUpdate(req.params.id,req.body,{new:true});
