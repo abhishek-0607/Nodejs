@@ -11,20 +11,121 @@ const connect = ()=>{
 const jobSchema = new mongoose.Schema({
     job_title:{type:String, required:true, unique:true},
     rating:{type:Number, required:true},
-
-
-},{
+    skill_ids:[
+        {type: mongoose.Schema.Types.ObjectId,
+        ref:"skill",
+        required:true
+    }],
+    city_ids:[
+        {type: mongoose.Schema.Types.ObjectId,
+        ref:"city",
+        required:true
+    }]
+},
+{
     versionKey:false,
     timeStamps: true
 })
 
 const Job = mongoose.model("job",jobSchema);
 
+//schema for skill
+const skillSchema = new mongoose.Schema({
+    skill_name:{type:String, required:true, unique:true}
+
+},
+{
+    versionKey:false,
+    timeStamps: true
+})
+
+const Skill = mongoose.model("skill",skillSchema);
+
 //schema for city
 
 const citySchema = new mongoose.Schema({
     city_name:{type:String, required:true, unique:true}
+},
+{
+    versionKey:false,
+    timeStamps: true
 })
+const City = mongoose.model("city",citySchema);
+
+// schema for company
+
+const companySchema = new mongoose.Schema({
+    company_name:{type:String, required:true, unique:true},
+    job_ids:[
+        {type: mongoose.Schema.Types.ObjectId,
+        ref:"job",
+        required:true
+    }],
+
+},
+{
+    versionKey:false,
+    timeStamps: true
+})
+
+const Company = mongoose.model("company",companySchema);
+
+
+//crud for city 
+app.post("/cities", async (req,res)=>{
+    try{
+        const city = await City.create(req.body);
+        return res.status(201).send(city);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/cities", async (req,res)=>{
+    try{
+        const cities = await City.find().lean().exec();
+        return res.send({cities});
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.get("/cities/:id",async(req,res)=>{
+    try{
+        const city = await City.findById(req.params.id).lean().exec();
+        return res.status(201).send(city);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.patch("/cities/:id",async(req,res)=>{
+    try{
+        const city = await City.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        return res.status(201).send(city);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+app.delete("/cities/:id",async (req,res)=>{
+    try{
+        const city = await City.findByIdAndDelete(req.params.id).lean().exec();
+        res.status(200).send(city);
+    }
+    catch(e){
+        return res.status(500).json({message:e.message, ststus:"Failed"})
+    }
+})
+
+
+
+
+
 
 
 
