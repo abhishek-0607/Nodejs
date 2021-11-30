@@ -5,5 +5,5 @@ const userSchema = new Schema({
    last_name:{ type:String },
    email:{ type:String, required:true }
 })
-
-module.exports = model('user', userSchema);
+ const User = model("user", userSchema)
+module.exports = User;
