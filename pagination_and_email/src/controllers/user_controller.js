@@ -24,7 +24,7 @@ router.post("/",async(req,res)=>{
 router.get("/",async(req,res)=>{
      try{
         const page = +req.query.page || 1;
-        const size = +req.query.size || 2;
+        const size = +req.query.size || 5;
         const skip = (page -1)*size;
 
         const users = await User.find().skip(skip).limit(size).lean().exec();
