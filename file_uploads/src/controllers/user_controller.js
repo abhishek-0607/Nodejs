@@ -5,7 +5,7 @@ const upload = require("../middleware/upload")
 
 const router = express.Router();
 
-router.post("/",upload.single("profile_pic"),async(req,res)=>{
+router.post("/",upload.single("profile_pic"),async (req,res)=>{
     //console.log(path.join(__dirname,"../uploads"))
     try{
        const user = await User.create({
