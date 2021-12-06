@@ -26,7 +26,7 @@ body("pincode").custom((value)=>{
     }
     return true;
 }),
-body("gender").notEmpty().equals("male"||"female").withMessage("should be male or female"),
+body("gender").notEmpty().equals("male"||"female"||"others").withMessage("should be male or female"),
 body("age").custom((value)=>{
     const isNumber = /^[0-9]*$/.test(value);
     if(!isNumber || value <= 100||value>=1){
