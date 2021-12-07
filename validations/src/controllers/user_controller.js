@@ -9,11 +9,12 @@ router.post("/",
 body("first_name").notEmpty().withMessage("first name is required"),
 body("last_name").notEmpty().withMessage("last name is required"),
 body("email").custom((value)=>{
-    const userByEmail = await User.findOne({email:value}).lean().exec();
     const isEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/.test(value);
     if(!isEmail || value <= 0){
         throw new Error("Email is invalid")
     }
+    const userByEmail = User.findOne({email:value}).lean().exec();
+
     if(userByEmail){
         throw new Error("Please try with different email")
     }
@@ -36,7 +37,7 @@ body("age").custom((value)=>{
 }),
 
     async (req,res)=>{
-        console.log(body("first_name"))
+        //console.log(body("first_name"))
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
