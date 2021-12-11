@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/",authenticate,async (req,res)=>{
     try{
         const user = req.user;
-        console.log(user)
+        //console.log(user)
 
 
         const product = await Product.create({
