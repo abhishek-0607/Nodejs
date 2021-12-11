@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {register,login} = require("./controllers/auth_controller")
+
 const productController = require("./controllers/product_controller")
 
 
