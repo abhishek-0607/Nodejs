@@ -1,10 +1,10 @@
-const passport = require("passport");
-
 require("dotenv").config()
+
+const passport = require("passport");
 
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
-//const { uuid } = require('uuidv4');
+const { uuid } = require("uuidv4");
 
 const User = require("../models/user")
 
@@ -19,15 +19,15 @@ passport.use(
         async function(request, accessToken, refreshToken, profile, done) {
             console.log(accessToken, refreshToken, profile);
 
-            // let user = await User.find({email: profile?._json?.email}).lean().exec()
+            let user = await User.findOne({email: profile?._json?.email}).lean().exec()
 
-            // if(!user){
-            //     user = await User.create({
-            //         email: profile?._json?.email,
-            //          password: uuid() 
-            //         })
-            // }
-            return done(null, 'user');
+            if(!user){
+                user = await User.create({
+                    email: profile?._json?.email,
+                     password: uuid() 
+                    })
+            }
+            return done(null, user);
         }
 ));
 

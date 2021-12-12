@@ -11,6 +11,8 @@ const app = express();
 
 app.use(express.json());
 
+app.use(passport.initialize());
+
 app.post("/register",register);
 app.post("/login",login)
 
