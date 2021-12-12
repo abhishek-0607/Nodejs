@@ -13,6 +13,16 @@ app.use(express.json());
 
 app.use(passport.initialize());
 
+passport.serializeUser(function({user,token},done){
+    //console.log("user:",user);
+    done(null,{user,token})
+})
+
+passport.deserializeUser(function(user,done){
+    // console.log("user2:",user);
+    done(err,user)
+})
+
 app.post("/register",register);
 app.post("/login",login)
 
@@ -25,12 +35,17 @@ app.get('/auth/google',
 
 app.get( '/auth/google/callback',
     passport.authenticate( 'google', {
-        successRedirect: '/auth/google/success',
         failureRedirect: '/auth/google/failure'
-}),function (req,res){
-    console.log("req:", req);
-    return res,send({req: req.user})
-});
+}),
+    function (req,res){
+        console.log("req:", req.user);
+        res.status(201).json({user: req.user.user,token: req.user.token})
+    }
+);
+
+app.get("/auth/google/failure",function(req,res){
+    return res.send("something went wrong");
+})
 
 
 
