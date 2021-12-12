@@ -4,9 +4,13 @@ const passport = require("passport");
 
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
-const { uuid } = require("uuidv4");
+const { uuid } = require('uuidv4');
+
+const {newToken} = require("../controllers/auth_controller")
 
 const User = require("../models/user")
+
+
 
 passport.use(
     new GoogleStrategy(
@@ -18,7 +22,7 @@ passport.use(
             passReqToCallback   : true
         },
         async function(request, accessToken, refreshToken, profile, done) {
-            console.log(accessToken, refreshToken, profile);
+            // console.log(accessToken, refreshToken, profile);
 
             let user = await User.findOne({email: profile?._json?.email}).lean().exec()
 
@@ -28,7 +32,9 @@ passport.use(
                      password: uuid() 
                     })
             }
-            return done(null, user);
+            const token = newToken(user);
+
+            return done(null, {user, token});
         }
 ));
 
