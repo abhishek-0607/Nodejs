@@ -14,7 +14,7 @@ const verifyToken = (token) =>{
 module.exports = async (req,res,next)=>{
     const bearerToken = req?.headers?.authorization;
 
-    if(!bearerToken || bearerToken.startWith("Bearer "))
+    if(!bearerToken || bearerToken.startsWith("Bearer "))
     return res.status(400).json({
         status:"Failed",
         message: "Please provide a valid token"
