@@ -3,27 +3,32 @@ const express = require("express");
 const Product = require("../models/product")
 
 const authenticate = require("../middlewares/authenticate");
+const authorise = require("../middlewares/authorise");
+
 
 const router = express.Router();
 
 
-router.post("/",authenticate,async (req,res)=>{
-    try{
-        const user = req.user;
-        //console.log(user)
+router.post("/",
+    authenticate,
+    authorise(["seller", "admin"]),
+    async (req,res)=>{
+        try{
+            const user = req.user;
+            //console.log(user)
 
 
-        const product = await Product.create({
-            name: req.body.name,
-            price: req.body.price,
-            user: user.user._id
-        });
+            const product = await Product.create({
+                name: req.body.name,
+                price: req.body.price,
+                user: user.user._id
+            });
 
-       return res.status(201).send(product);
-    }
-    catch(e){
-       return res.status(500).json({ message:e.message, status:"failed" })
-    }
+        return res.status(201).send(product);
+        }
+        catch(e){
+        return res.status(500).json({ message:e.message, status:"failed" })
+        }
 
 })
 
