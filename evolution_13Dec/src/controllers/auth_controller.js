@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const newToken = (user)=>{
-    return jwt.sign.apply({user:user},process.env.JWT_ACCESS_KEY)
+    return jwt.sign({user:user},process.env.JWT_ACCESS_KEY)
 }
 
 
