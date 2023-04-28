@@ -12,6 +12,8 @@ const httpServer = http.createServer((req, res) => {
     .end(index);
 });
 let totalUsers = 0;
+const history = [];
+// const users = [{id:1,username:"john",messages:[]}]
 const ws = new Server(httpServer);
 ws.on("connection", (conn) => {
   totalUsers += 1;
@@ -21,10 +23,12 @@ ws.on("connection", (conn) => {
   // });
 
   conn.on("new message", (message) => {
+    history.push(message);
     //emitting the event on the server which is emitted by a User
     ws.emit("new message", message);
     // console.log("client message->", message);
   });
+  conn.emit("history", history);
   console.log("a new user connected! Total users->", totalUsers);
 });
 httpServer.listen(8000, () => {
