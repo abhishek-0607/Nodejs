@@ -34,4 +34,7 @@
     div.innerText = message;
     document.getElementById("messages").appendChild(div);
   });
+  socket.on("history", (history) => {
+    console.log("previous", history);
+  });
 </script>
